@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Experiment I
+{%  endblock %}
+
+{% block content %}
+
+
+<html>
+
+<head>
+
+<script src="../static/js/brython.js"></script>
+
+</head>
+
+
+<body onload="brython()">
+<div id="result">Result<div>
+
+<script id="script" type="text/python">
+
+from browser import document, ajax
+
+def on_complete(req):
+   if req.status==200 or req.status==0:
+       document["result"].html = req.text
+   else:
+       document["result"].html = "error "+req.text
+
+req = ajax.ajax()
+req.bind('complete',on_complete)
+# send a POST request to the url
+req.open('POST',url,True)
+req.set_header('content-type','application/x-www-form-urlencoded')
+# send data as a dictionary
+req.send({'x':0, 'y':1})
+
+</script>
+
+<script type="text/python" src="test.py"></script>
+
+</body>
+</html>
+
+
+{% endblock %}
+
+
+
